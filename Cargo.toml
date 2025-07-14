@@ -1,0 +1,23 @@
+[package]
+authors = ["David Wallace Croft <david@CroftSoft.com>"]
+description = "Code adapted from the book 'Rust Atomics and LOcks' by Mara Bos"
+edition = "2024"
+homepage = "https://www.CroftSoft.com/"
+license = "MIT"
+name = "book-rust-atomics"
+publish = false
+readme = "README.md"
+repository = "https://github.com/david-wallace-croft/book-rust-atomics"
+rust-version = "1.88.0"
+version = "0.0.0-SNAPSHOT"
+
+[dependencies]
+
+[dev-dependencies]
+
+[features]
+
+[profile.dev]
+debug = "line-tables-only"
+
+[profile.release]
