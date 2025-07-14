@@ -39,4 +39,36 @@ mod test {
 
     t2.join().unwrap();
   }
+
+  #[test]
+  fn test2() {
+    let numbers: Vec<i32> = vec![
+      1, 2, 3,
+    ];
+
+    thread::spawn(move || {
+      for n in &numbers {
+        println!("{n}");
+      }
+    })
+    .join()
+    .unwrap();
+  }
+
+  #[test]
+  fn test3() {
+    let numbers: Vec<usize> = Vec::from_iter(0..=1_000);
+
+    let t: JoinHandle<usize> = thread::spawn(move || {
+      let len: usize = numbers.len();
+
+      let sum: usize = numbers.iter().sum();
+
+      sum / len
+    });
+
+    let average: usize = t.join().unwrap();
+
+    println!("average: {average}");
+  }
 }
