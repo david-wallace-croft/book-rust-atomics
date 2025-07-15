@@ -15,6 +15,7 @@
 - cargo test --lib -- --show-output ch01_p002_threads::test::test1
 - cargo test --lib -- --show-output ch01_p002_threads::test::test2
 - cargo test --lib -- --show-output ch01_p002_threads::test::test3
+- cargo test --lib -- --show-output ch01_p005_scoped::test::test1
 
 ## History
 
