@@ -68,4 +68,64 @@ mod test {
 
     assert_eq!(x_1, x);
   }
+
+  #[test]
+  fn test3() {
+    let a: Arc<[i32; 3]> = Arc::new([
+      1, 2, 3,
+    ]);
+
+    let b: Arc<[i32; 3]> = a.clone();
+
+    let join_handle_a: JoinHandle<Arc<[i32; 3]>> =
+      thread::spawn(move || dbg!(a));
+
+    let join_handle_b: JoinHandle<Arc<[i32; 3]>> =
+      thread::spawn(move || dbg!(b));
+
+    let result_a: Result<Arc<[i32; 3]>, Box<dyn Any + Send + 'static>> =
+      join_handle_a.join();
+
+    let result_b: Result<Arc<[i32; 3]>, Box<dyn Any + Send + 'static>> =
+      join_handle_b.join();
+
+    let x_a: Arc<[i32; 3]> = result_a.unwrap();
+
+    let x_b: Arc<[i32; 3]> = result_b.unwrap();
+
+    assert_eq!(*x_a, *x_b);
+  }
+
+  #[test]
+  fn test4() {
+    let a: Arc<[i32; 3]> = Arc::new([
+      1, 2, 3,
+    ]);
+
+    let join_handle_a: JoinHandle<Arc<[i32; 3]>> = thread::spawn({
+      let a: Arc<[i32; 3]> = a.clone();
+
+      move || dbg!(a)
+    });
+
+    let join_handle_b: JoinHandle<Arc<[i32; 3]>> = thread::spawn({
+      let a: Arc<[i32; 3]> = a.clone();
+
+      move || dbg!(a)
+    });
+
+    let result_a: Result<Arc<[i32; 3]>, Box<dyn Any + Send + 'static>> =
+      join_handle_a.join();
+
+    let result_b: Result<Arc<[i32; 3]>, Box<dyn Any + Send + 'static>> =
+      join_handle_b.join();
+
+    let x_a: Arc<[i32; 3]> = result_a.unwrap();
+
+    let x_b: Arc<[i32; 3]> = result_b.unwrap();
+
+    assert_eq!(*x_a, *a);
+
+    assert_eq!(*x_b, *a);
+  }
 }

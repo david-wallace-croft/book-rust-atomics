@@ -18,6 +18,8 @@
 - cargo test --lib -- --show-output ch01_p005_scoped::test::test1
 - cargo test --lib -- --show-output ch01_p007_shared::test::test1
 - cargo test --lib -- --show-output ch01_p007_shared::test::test2
+- cargo test --lib -- --show-output ch01_p007_shared::test::test3
+- cargo test --lib -- --show-output ch01_p007_shared::test::test4
 
 ## History
 
