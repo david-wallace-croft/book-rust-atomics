@@ -9,6 +9,7 @@
   - https://www.oreilly.com/library/view/rust-atomics-and/9781098119430/
   - https://www.oreilly.com/catalog/errata.csp?isbn=0636920635048
   - https://marabos.nl/atomics/
+  - https://github.com/m-ou-se/rust-atomics-and-locks
 
 ## Usage
 
