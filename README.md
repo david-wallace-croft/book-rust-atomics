@@ -24,8 +24,8 @@
 - cargo test --lib -- --show-output ch01_p018_locking::test::test1
 - cargo test --lib -- --show-output ch01_p018_locking::test::test2
 - cargo test --lib -- --show-output ch01_p018_locking::test::test3
-- cargo test --lib -- --show-output ch01_p024_waiting::test::test1
-- cargo test --lib -- --show-output ch01_p024_waiting::test::test2
+- cargo test --lib -- ch01_p024_waiting::test::test1
+- cargo test --lib -- ch01_p024_waiting::test::test2
 
 ## History
 

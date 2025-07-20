@@ -12,6 +12,8 @@ rust-version = "1.88.0"
 version = "0.0.0-SNAPSHOT"
 
 [dependencies]
+tracing = "0.1.41"
+tracing-subscriber = "0.3.19"
 
 [dev-dependencies]
 
