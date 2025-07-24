@@ -24,12 +24,15 @@ mod test {
   use super::*;
   use rand::prelude::*;
 
-  fn process_item(_i: usize) {
+  fn process_item(
+    _i: usize,
+    max_delay: u64,
+  ) {
     // info!("Worker thread: Processing item {i} starting");
 
     let mut rng: ThreadRng = rand::rng();
 
-    let millis: u64 = rng.random_range(10..=100);
+    let millis: u64 = rng.random_range(1..=max_delay);
 
     thread::sleep(Duration::from_millis(millis));
 
@@ -39,7 +42,7 @@ mod test {
   fn some_work() {
     info!("Background thread: Work starting");
 
-    thread::sleep(Duration::from_secs(3));
+    thread::sleep(Duration::from_secs(1));
 
     info!("Background thread: Work finished");
   }
@@ -58,13 +61,15 @@ mod test {
       info!("Background thread: Stopping")
     });
 
-    for line in io::stdin().lines() {
-      match line.unwrap().as_str() {
-        "help" => info!("commands: help, stop"),
-        "stop" => break,
-        cmd => info!("unknown command: {cmd:?}"),
-      }
-    }
+    // for line in io::stdin().lines() {
+    //   match line.unwrap().as_str() {
+    //     "help" => info!("commands: help, stop"),
+    //     "stop" => break,
+    //     cmd => info!("unknown command: {cmd:?}"),
+    //   }
+    // }
+
+    thread::sleep(Duration::from_millis(2_500));
 
     info!("Main thread: Raising stop flag");
 
@@ -84,7 +89,7 @@ mod test {
     thread::scope(|s: &Scope<'_, '_>| {
       s.spawn(|| {
         for i in 0..100 {
-          process_item(i);
+          process_item(i, 100);
 
           num_done.store(i + 1, Relaxed);
         }
@@ -100,6 +105,43 @@ mod test {
         }
 
         thread::sleep(Duration::from_secs(1));
+      }
+    });
+
+    info!("Done!");
+  }
+
+  #[test]
+  fn test3() {
+    crate::init_tracing();
+
+    let num_done: AtomicUsize = Default::default();
+
+    let main_thread = thread::current();
+
+    const ITEM_COUNT: usize = 10;
+
+    thread::scope(|s: &Scope<'_, '_>| {
+      s.spawn(|| {
+        for i in 0..ITEM_COUNT {
+          process_item(i, 2_000);
+
+          num_done.store(i + 1, Relaxed);
+
+          main_thread.unpark();
+        }
+      });
+
+      loop {
+        let n: usize = num_done.load(Relaxed);
+
+        info!("{n} of {ITEM_COUNT} done");
+
+        if n == ITEM_COUNT {
+          break;
+        }
+
+        thread::park_timeout(Duration::from_secs(1));
       }
     });
 

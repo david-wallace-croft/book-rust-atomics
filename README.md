@@ -28,6 +28,7 @@
 - cargo test --lib -- ch01_p024_waiting::test::test2
 - cargo test --lib -- ch02_p032_atomic::test::test1
 - cargo test --lib -- ch02_p032_atomic::test::test2
+- cargo test --lib -- ch02_p032_atomic::test::test3
 
 ## History
 
