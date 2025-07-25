@@ -6,6 +6,7 @@ mod ch01_p007_shared;
 mod ch01_p018_locking;
 mod ch01_p024_waiting;
 mod ch02_p032_atomic;
+mod ch02_p035_example;
 
 static TRACING_INIT: LazyLock<Once> = LazyLock::new(|| Once::new());
 

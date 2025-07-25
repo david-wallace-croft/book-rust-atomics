@@ -29,6 +29,7 @@
 - cargo test --lib -- ch02_p032_atomic::test::test1
 - cargo test --lib -- ch02_p032_atomic::test::test2
 - cargo test --lib -- ch02_p032_atomic::test::test3
+- cargo test --lib -- ch02_p035_example::test::test1
 
 ## History
 
