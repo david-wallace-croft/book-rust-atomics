@@ -8,6 +8,7 @@ mod ch01_p024_waiting;
 mod ch02_p032_atomic;
 mod ch02_p035_example;
 mod ch02_p038_example;
+mod ch02_p039_example;
 
 static TRACING_INIT: LazyLock<Once> = LazyLock::new(|| Once::new());
 
