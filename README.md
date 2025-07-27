@@ -36,6 +36,7 @@
 - cargo test --lib -- ch02_p042_compare::test::test1
 - cargo test --lib -- ch02_p044_example::test::test1
 - cargo test --lib -- ch02_p044_example::test::test2
+- cargo test --lib -- ch02_p046_example::test::test1
 
 ## History
 
