@@ -14,6 +14,7 @@ mod ch02_p042_compare;
 mod ch02_p044_example;
 mod ch02_p046_example;
 
+// TODO: OnceLock ?
 static TRACING_INIT: LazyLock<Once> = LazyLock::new(|| Once::new());
 
 #[allow(dead_code)]
