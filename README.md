@@ -39,6 +39,7 @@
 - cargo test --lib -- ch02_p046_example::test::test1
 - cargo test --lib -- ch03_p057_release::test::test1
 - cargo test --lib -- ch03_p060_example::test::test1
+- cargo test --lib -- ch03_p062_example::test::test1
 
 ## History
 
