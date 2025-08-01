@@ -17,6 +17,7 @@ mod ch03_p057_release;
 mod ch03_p060_example;
 mod ch03_p062_example;
 mod ch03_p066_sequentially;
+mod ch03_p067_fences;
 
 // TODO: OnceLock ?
 static TRACING_INIT: LazyLock<Once> = LazyLock::new(|| Once::new());

@@ -41,6 +41,7 @@
 - cargo test --lib -- ch03_p060_example::test::test1
 - cargo test --lib -- ch03_p062_example::test::test1
 - cargo test --lib -- ch03_p066_sequentially::test::test1
+- cargo test --lib -- ch03_p067_fences::test::test1
 
 ## History
 
