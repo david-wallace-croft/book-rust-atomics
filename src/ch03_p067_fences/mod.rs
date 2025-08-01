@@ -29,7 +29,7 @@ use tracing::info;
 fn some_calculation(i: usize) -> usize {
   let mut rng: ThreadRng = rand::rng();
 
-  let millis = rng.random_range(0..1_000);
+  let millis: u64 = rng.random_range(0..1_000);
 
   thread::sleep(Duration::from_millis(millis));
 
@@ -52,7 +52,7 @@ mod test {
 
     for i in 0..10 {
       thread::spawn(move || {
-        let data = some_calculation(i);
+        let data: usize = some_calculation(i);
 
         unsafe {
           DATA[i] = data;
@@ -71,6 +71,7 @@ mod test {
 
     if ready.contains(&true) {
       // Every access after the Acquire stays after it.
+      // TODO: This means the reads of DATA will be after the reads of READY?
       atomic::fence(Acquire);
 
       for i in 0..10 {
