@@ -20,7 +20,7 @@ mod ch03_p066_sequentially;
 mod ch03_p067_fences;
 
 // TODO: OnceLock ?
-static TRACING_INIT: LazyLock<Once> = LazyLock::new(|| Once::new());
+static TRACING_INIT: LazyLock<Once> = LazyLock::new(Once::new);
 
 #[allow(dead_code)]
 fn init_tracing() {
