@@ -1,4 +1,4 @@
-use std::sync::{LazyLock, Once};
+use std::sync::Once;
 
 mod ch01_p002_threads;
 mod ch01_p005_scoped;
@@ -19,8 +19,7 @@ mod ch03_p062_example;
 mod ch03_p066_sequentially;
 mod ch03_p067_fences;
 
-// TODO: OnceLock ?
-static TRACING_INIT: LazyLock<Once> = LazyLock::new(Once::new);
+static TRACING_INIT: Once = Once::new();
 
 #[allow(dead_code)]
 fn init_tracing() {
