@@ -44,6 +44,7 @@
 - cargo test --lib -- ch03_p067_fences::test::test1
 - cargo test --lib -- ch04_p075_minimal::test::test1
 - cargo test --lib -- ch04_p078_unsafe::test::test1
+- cargo test --lib -- ch04_p080_safe::test::test1
 
 ## History
 
