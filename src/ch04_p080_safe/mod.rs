@@ -66,7 +66,7 @@ impl<T> SpinLock<T> {
   pub fn lock(
     &self,
     i: T,
-  ) -> Guard<T>
+  ) -> Guard<'_, T>
   where
     T: Display,
   {

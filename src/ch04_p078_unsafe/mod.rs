@@ -39,6 +39,7 @@ impl<T> SpinLock<T> {
     }
   }
 
+  #[allow(clippy::mut_from_ref)]
   pub fn lock(
     &self,
     i: T,
