@@ -8,7 +8,7 @@ name = "book-rust-atomics"
 publish = false
 readme = "README.md"
 repository = "https://github.com/david-wallace-croft/book-rust-atomics"
-rust-version = "1.88.0"
+rust-version = "1.89.0"
 version = "0.0.0-SNAPSHOT"
 
 [dependencies]
