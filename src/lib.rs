@@ -25,6 +25,7 @@ mod ch05_p085_simple;
 mod ch05_p087_unsafe;
 mod ch05_p090_safety;
 mod ch05_p093_using;
+mod ch05_p094_safety;
 
 static TRACING_INIT: Once = Once::new();
 
