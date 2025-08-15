@@ -48,6 +48,7 @@
 - cargo test --lib -- ch05_p085_simple::test::test1
 - cargo test --lib -- ch05_p087_unsafe::test::test1
 - cargo test --lib -- ch05_p090_safety::test::test1
+- cargo test --lib -- ch05_p093_using::test::test1
 
 ## History
 
