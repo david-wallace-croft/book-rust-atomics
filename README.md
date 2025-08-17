@@ -51,6 +51,7 @@
 - cargo test --lib -- ch05_p093_using::test::test1
 - cargo test --lib -- ch05_p094_safety::test::test1
 - cargo test --lib -- ch05_p098_borrowing::test::test1
+- cargo test --lib -- ch05_p101_blocking::test::test1
 
 ## History
 
