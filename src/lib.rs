@@ -28,6 +28,7 @@ mod ch05_p093_using;
 mod ch05_p094_safety;
 mod ch05_p098_borrowing;
 mod ch05_p101_blocking;
+mod ch06_p105_basic;
 
 static TRACING_INIT: Once = Once::new();
 
