@@ -49,6 +49,16 @@ impl<T> MyArc<T> {
     }
   }
 
+  pub fn get_mut(my_arc: &mut Self) -> Option<&mut T> {
+    if my_arc.data().ref_count.load(Relaxed) == 1 {
+      atomic::fence(Acquire);
+
+      unsafe { Some(&mut my_arc.ptr.as_mut().data) }
+    } else {
+      None
+    }
+  }
+
   fn data(&self) -> &MyArcData<T> {
     unsafe { self.ptr.as_ref() }
   }
@@ -85,6 +95,7 @@ impl<T> Drop for MyArc<T> {
     }
   }
 }
+
 #[cfg(test)]
 mod test {
   use super::*;
@@ -105,9 +116,10 @@ mod test {
       }
     }
 
-    let x: Arc<(&'static str, DetectDrop)> = Arc::new(("hello", DetectDrop));
+    let x: MyArc<(&'static str, DetectDrop)> =
+      MyArc::new(("hello", DetectDrop));
 
-    let y: Arc<(&'static str, DetectDrop)> = x.clone();
+    let y: MyArc<(&'static str, DetectDrop)> = x.clone();
 
     let t: JoinHandle<()> = thread::spawn(move || {
       assert_eq!(x.0, "hello");
@@ -122,5 +134,20 @@ mod test {
     drop(y);
 
     assert_eq!(NUM_DROPS.load(Relaxed), 1);
+  }
+
+  #[test]
+  fn test2() {
+    crate::init_tracing();
+
+    let mut x: MyArc<&'static str> = MyArc::new("hello");
+
+    let y: MyArc<&'static str> = x.clone();
+
+    assert!(MyArc::get_mut(&mut x).is_none());
+
+    drop(y);
+
+    assert!(MyArc::get_mut(&mut x).is_some());
   }
 }
