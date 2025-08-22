@@ -55,6 +55,7 @@
 - cargo test --lib -- ch06_p105_basic::test::test1
 - cargo test --lib -- ch06_p105_basic::test::test2
 - cargo test --lib -- ch06_p111_weak::test::test1
+- cargo test --lib -- ch06_p118_optimizing::test::test1
 
 ## History
 
