@@ -39,6 +39,7 @@ mod ch09_p193_condition;
 mod ch09_p198_avoiding;
 mod ch09_p203_reader_writer;
 mod ch09_p206_avoiding;
+mod ch09_p209_avoiding;
 
 static TRACING_INIT: Once = Once::new();
 

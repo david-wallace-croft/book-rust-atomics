@@ -65,6 +65,7 @@
 - cargo test --lib -- ch09_p198_avoiding::test::test1
 - cargo test --lib -- ch09_p203_reader_writer::test::test1
 - cargo test --lib -- ch09_p206_avoiding::test::test1
+- cargo test --lib -- ch09_p209_avoiding::test::test1
 
 ## History
 
