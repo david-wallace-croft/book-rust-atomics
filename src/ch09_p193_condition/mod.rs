@@ -76,11 +76,11 @@ mod test {
   fn test1() {
     crate::init_tracing();
 
-    let my_mutex = MyMutex::new(0);
+    let my_mutex: MyMutex<i32> = MyMutex::new(0);
 
-    let my_condvar = MyCondvar::new();
+    let my_condvar: MyCondvar = MyCondvar::new();
 
-    let mut wakeups = 0;
+    let mut wakeups: i32 = 0;
 
     thread::scope(|s| {
       s.spawn(|| {
@@ -91,7 +91,7 @@ mod test {
         my_condvar.notify_one();
       });
 
-      let mut m = my_mutex.lock();
+      let mut m: MyMutexGuard<'_, i32> = my_mutex.lock();
 
       while *m < 100 {
         m = my_condvar.wait(m);
