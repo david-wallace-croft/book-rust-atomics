@@ -61,13 +61,29 @@ impl<T> MyMutex<T> {
 
   pub fn lock(&'_ self) -> MyMutexGuard<'_, T> {
     while self.state.compare_exchange(0, 1, Acquire, Relaxed).is_err() {
-      while self.state.swap(2, Acquire) != 0 {
-        atomic_wait::wait(&self.state, 2);
-      }
+      Self::lock_contended(&self.state);
     }
 
     MyMutexGuard {
       my_mutex: self,
+    }
+  }
+
+  fn lock_contended(state: &AtomicU32) {
+    let mut spin_count = 0;
+
+    while state.load(Relaxed) == 1 && spin_count < 100 {
+      spin_count += 1;
+
+      hint::spin_loop();
+    }
+
+    if state.compare_exchange(0, 1, Acquire, Relaxed).is_ok() {
+      return;
+    }
+
+    while state.swap(2, Acquire) != 0 {
+      atomic_wait::wait(state, 2);
     }
   }
 }
@@ -85,7 +101,6 @@ mod test {
 
   use super::*;
 
-  // TODO: This test locks up intermittently so there might be a design flaw
   #[test]
   fn test1() {
     // Test code adapted from main() function on Chapter 4 page 82

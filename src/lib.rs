@@ -33,6 +33,7 @@ mod ch06_p111_weak;
 mod ch06_p118_optimizing;
 mod ch09_p183_mutex;
 mod ch09_p186_avoiding;
+mod ch09_p188_optimizing;
 
 static TRACING_INIT: Once = Once::new();
 
