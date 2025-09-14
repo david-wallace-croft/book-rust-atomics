@@ -31,29 +31,6 @@ pub struct MyMutex<T> {
   value: UnsafeCell<T>,
 }
 
-unsafe impl<T> Sync for MyMutex<T> where T: Send {}
-
-pub struct MyMutexGuard<'a, T> {
-  my_mutex: &'a MyMutex<T>,
-}
-
-// From errata webpage
-unsafe impl<T> Sync for MyMutexGuard<'_, T> where T: Sync {}
-
-impl<T> Deref for MyMutexGuard<'_, T> {
-  type Target = T;
-
-  fn deref(&self) -> &T {
-    unsafe { &*self.my_mutex.value.get() }
-  }
-}
-
-impl<T> DerefMut for MyMutexGuard<'_, T> {
-  fn deref_mut(&mut self) -> &mut T {
-    unsafe { &mut *self.my_mutex.value.get() }
-  }
-}
-
 impl<T> MyMutex<T> {
   pub const fn new(value: T) -> Self {
     Self {
@@ -73,6 +50,26 @@ impl<T> MyMutex<T> {
   }
 }
 
+unsafe impl<T> Sync for MyMutex<T> where T: Send {}
+
+pub struct MyMutexGuard<'a, T> {
+  my_mutex: &'a MyMutex<T>,
+}
+
+impl<T> Deref for MyMutexGuard<'_, T> {
+  type Target = T;
+
+  fn deref(&self) -> &T {
+    unsafe { &*self.my_mutex.value.get() }
+  }
+}
+
+impl<T> DerefMut for MyMutexGuard<'_, T> {
+  fn deref_mut(&mut self) -> &mut T {
+    unsafe { &mut *self.my_mutex.value.get() }
+  }
+}
+
 impl<T> Drop for MyMutexGuard<'_, T> {
   fn drop(&mut self) {
     self.my_mutex.state.store(0, Release);
@@ -80,6 +77,9 @@ impl<T> Drop for MyMutexGuard<'_, T> {
     atomic_wait::wake_one(&self.my_mutex.state);
   }
 }
+
+// From errata webpage
+unsafe impl<T> Sync for MyMutexGuard<'_, T> where T: Sync {}
 
 #[cfg(test)]
 mod test {

@@ -31,29 +31,6 @@ pub struct MyMutex<T> {
   value: UnsafeCell<T>,
 }
 
-unsafe impl<T> Sync for MyMutex<T> where T: Send {}
-
-pub struct MyMutexGuard<'a, T> {
-  my_mutex: &'a MyMutex<T>,
-}
-
-// From errata webpage
-unsafe impl<T> Sync for MyMutexGuard<'_, T> where T: Sync {}
-
-impl<T> Deref for MyMutexGuard<'_, T> {
-  type Target = T;
-
-  fn deref(&self) -> &T {
-    unsafe { &*self.my_mutex.value.get() }
-  }
-}
-
-impl<T> DerefMut for MyMutexGuard<'_, T> {
-  fn deref_mut(&mut self) -> &mut T {
-    unsafe { &mut *self.my_mutex.value.get() }
-  }
-}
-
 impl<T> MyMutex<T> {
   pub const fn new(value: T) -> Self {
     Self {
@@ -63,7 +40,7 @@ impl<T> MyMutex<T> {
   }
 
   pub fn lock(&'_ self) -> MyMutexGuard<'_, T> {
-    while self.state.compare_exchange(0, 1, Acquire, Relaxed).is_err() {
+    if self.state.compare_exchange(0, 1, Acquire, Relaxed).is_err() {
       Self::lock_contended(&self.state);
     }
 
@@ -91,6 +68,26 @@ impl<T> MyMutex<T> {
   }
 }
 
+unsafe impl<T> Sync for MyMutex<T> where T: Send {}
+
+pub struct MyMutexGuard<'a, T> {
+  my_mutex: &'a MyMutex<T>,
+}
+
+impl<T> Deref for MyMutexGuard<'_, T> {
+  type Target = T;
+
+  fn deref(&self) -> &T {
+    unsafe { &*self.my_mutex.value.get() }
+  }
+}
+
+impl<T> DerefMut for MyMutexGuard<'_, T> {
+  fn deref_mut(&mut self) -> &mut T {
+    unsafe { &mut *self.my_mutex.value.get() }
+  }
+}
+
 impl<T> Drop for MyMutexGuard<'_, T> {
   fn drop(&mut self) {
     if self.my_mutex.state.swap(0, Release) == 2 {
@@ -98,6 +95,9 @@ impl<T> Drop for MyMutexGuard<'_, T> {
     }
   }
 }
+
+// From errata webpage
+unsafe impl<T> Sync for MyMutexGuard<'_, T> where T: Sync {}
 
 #[cfg(test)]
 mod test {
@@ -123,8 +123,6 @@ mod test {
     info!("locked {} times in {:?}", *m.lock(), duration);
   }
 
-  // TODO: This test locks up consistently so there might be a bug
-  #[ignore]
   #[test]
   fn test2() {
     crate::init_tracing();
