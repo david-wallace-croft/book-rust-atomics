@@ -37,6 +37,9 @@ pub struct MyMutexGuard<'a, T> {
   my_mutex: &'a MyMutex<T>,
 }
 
+// From errata webpage
+unsafe impl<T> Sync for MyMutexGuard<'_, T> where T: Sync {}
+
 impl<T> Deref for MyMutexGuard<'_, T> {
   type Target = T;
 
