@@ -34,7 +34,7 @@ pub struct MyMutex<T> {
 unsafe impl<T> Sync for MyMutex<T> where T: Send {}
 
 pub struct MyMutexGuard<'a, T> {
-  my_mutex: &'a MyMutex<T>,
+  pub(crate) my_mutex: &'a MyMutex<T>,
 }
 
 impl<T> Deref for MyMutexGuard<'_, T> {
