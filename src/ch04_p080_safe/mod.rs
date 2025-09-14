@@ -49,6 +49,9 @@ impl<T> Drop for Guard<'_, T> {
   }
 }
 
+// From errata webpage
+unsafe impl<T> Sync for Guard<'_, T> where T: Sync {}
+
 pub struct SpinLock<T> {
   locked: AtomicBool,
   value: UnsafeCell<T>,
