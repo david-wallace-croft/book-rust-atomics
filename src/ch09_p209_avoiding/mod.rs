@@ -50,6 +50,9 @@ impl<T> Drop for MyReadGuard<'_, T> {
   }
 }
 
+// From errata webpage
+unsafe impl<T> Sync for MyReadGuard<'_, T> where T: Sync {}
+
 pub struct MyWriteGuard<'a, T> {
   my_rw_lock: &'a MyRwLock<T>,
 }
@@ -79,6 +82,9 @@ impl<T> Drop for MyWriteGuard<'_, T> {
     atomic_wait::wake_all(&self.my_rw_lock.state);
   }
 }
+
+// From errata webpage
+unsafe impl<T> Sync for MyWriteGuard<'_, T> where T: Sync {}
 
 pub struct MyRwLock<T> {
   state: AtomicU32,
