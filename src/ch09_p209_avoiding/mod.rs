@@ -105,7 +105,7 @@ impl<T> MyRwLock<T> {
     let mut s: u32 = self.state.load(Relaxed);
 
     loop {
-      if s % 2 == 0 {
+      if s.is_multiple_of(2) {
         // See errata webpage
         assert!(s < u32::MAX - 2, "too many readers");
 
@@ -145,7 +145,7 @@ impl<T> MyRwLock<T> {
         }
       }
 
-      if s % 2 == 0 {
+      if s.is_multiple_of(2) {
         match self.state.compare_exchange(s, s + 1, Relaxed, Relaxed) {
           Ok(_) => {},
           Err(e) => {

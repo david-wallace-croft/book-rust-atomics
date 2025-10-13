@@ -55,9 +55,9 @@ impl MyCondvar {
     &self,
     guard: MyMutexGuard<'a, T>,
   ) -> MyMutexGuard<'a, T> {
-    let counter_value = self.counter.load(Relaxed);
+    let counter_value: u32 = self.counter.load(Relaxed);
 
-    let mutex = guard.my_mutex;
+    let mutex: &'a MyMutex<T> = guard.my_mutex;
 
     drop(guard);
 
